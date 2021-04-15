@@ -1,0 +1,107 @@
+#include<stdio.h>
+struct fraction
+{
+int num;
+    int den;
+};
+typedef struct fraction fract;
+
+struct egyptian
+{
+    int m;
+    int den[100];
+    fract sum;
+};
+typedef struct egyptian egy;
+
+int input()
+{
+    int n;
+    printf("Enter the no. of instances of the problem:\n");
+    scanf("%d",&n);
+    return n;
+}
+
+void input_1(egy *e1)
+{
+    //printf("Enter the no. of values to be calculated\n");
+    scanf("%d",&e1->m);
+    for(int i=0;i<e1->m;i++)
+    {
+        printf("Enter the denominators:\n");
+        scanf("%d",&e1->den[i]);
+}
+}
+
+void input_n(int n,egy arr[n])
+{
+    for(int i=0;i<n;i++)
+    {
+        input_1(&arr[i]);
+    }
+}
+
+int gcd(int a,int b)
+{
+    while(a!=b)
+    {
+        if(a>b)
+            a=a-b;
+        else
+            b=b-a;
+    }
+    return b;
+}
+
+void compute_1(egy *e1)
+{
+    fract f;
+    f.num=0;
+    f.den=1;
+    int Gcd;
+    for(int i=0;i<e1->m;i++)
+    {
+        
+        e1->sum.num=(f.num*e1->den[i])+f.den;
+        e1->sum.den=f.den*e1->den[i];
+        Gcd=gcd(e1->sum.num,e1->sum.den);
+        e1->sum.num=e1->sum.num/Gcd;
+        e1->sum.den=e1->sum.den/Gcd;
+        f=e1->sum;
+    }
+}
+void compute_n(int n,egy arr[n])
+{
+    for(int i=0;i<n;i++)
+    {
+        compute_1(&arr[i]);
+    }
+}
+
+void output_1(egy *e1)
+{
+    for(int i=0;i<(e1->m)-1;i++)
+    {
+        printf("1/%d + ",e1->den[i]);
+    }
+    printf("1/%d = %d/%d\n",e1->den[(e1->m)-1],e1->sum.num,e1->sum.den);
+}
+
+void output_n(int n,egy arr[n])
+{
+    for(int i=0;i<n;i++)
+    {
+        output_1(&arr[i]);
+    }
+}
+
+int main()
+{
+    int n;
+    n=input();
+    egy arr[n];
+    input_n(n,arr);
+    compute_n(n,arr);
+    output_n(n,arr);
+    return 0;
+}
